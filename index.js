@@ -9,22 +9,22 @@ const PORT = 5555;
 
 app.get('/', async(req, res) => {
     const tasks =await Task.find()
-    res.send(tasks);
+    res.status(200).json(tasks);
 })
 
 
 
-try {
+// try {
     app.post('/', async(req, res) => {
         const{title, date, finished}=req.body;
         const newTask =Task({title, date,finished});
     
         const task = await newTask.save(); 
-        res.json(task);
+        res.status(201).json(task);
     })
-} catch (e) {
-    console.log(e)
-}
+// } catch (e) {
+//     console.log(e)
+// }
 
 
 app.put('/:id', async(req, res) => {
@@ -36,15 +36,16 @@ app.put('/:id', async(req, res) => {
         task.title = title;
         task.date = date;
         task.finished = finished;
+
         const updatedTask = await task.save();
-        res.json(updatedTask);
+        res.status(200).json(updatedTask);
     }
 })
 
 
 app.delete ('/:id', async(req, res) => {
     const task = await Task.findByIdAndDelete(req.params.id)  
-    res.json({massage: "Task deleted successfully!"})
+    res.status(200).json({massage: "Task deleted successfully!"})
    
 })
 
